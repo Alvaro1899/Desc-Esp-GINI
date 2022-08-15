@@ -1,0 +1,51 @@
+---
+title: "Descomposición espacial de GINI"
+author: "Alvaro Martínez Rodríguez"
+date: "2022-08-12"
+output: html_document
+---
+
+# Introducción a la descomposición de Gini{-}
+
+El interés por la desigualdad ha dado lugar a la un cuantioso numero de artículos relacionados con problemas de medición e interpretación. Entre las principales contribuciones al campo están la tradicional curva de Lorenz y el coeficiente de Gini. Este último indicador de inequidad se puede interpetar de forma común como la diferencia entre la perfecta igualdad y la curva de Lorenz. Sus valores se sitúan alrededor de 0 y 1, mientras que 0 indica completa igualdad, valores cercanos a 1 indican niveles altos de desigualdad.
+
+Es habitual que el cálculo de los indicadores de desigualdad se realice a partir de datos agrupados,ya que, no resulta practico tener conjuntos de datos que pueden tener tamaños distintos. Por ello, agrupar los datos facilita la tarea del cálculo y de comparación entre grupos.Sin embargo, esta manera de proceder conduce necesariamente a la pérdida de información, debido a que los valores individuales de las observaciones serán sustituidos por algún valor que represente al intervalo en que se encuentran agrupados (por ejemplo, la marca de clase).
+
+De acuerdo a lo anterior, el procedimiento que se utiliza para el cálculo del índice de Gini
+para datos agrupados es el siguiente:
+
+i.-  Ordenar los hogares en forma ascendente conforme a su ingreso.
+ii.- Definir intervalos de igual tamaño (por ejemplo, deciles de hogares).
+iii.- Construir la distribución de frecuencias relativas, simple y acumulada, de la variable a
+distribuir (ingreso), así como de la población que se desea estudiar. Si se opta por la
+formación de deciles de hogares, cada grupo deberá concentrar el 10% de las
+observaciones.
+
+La pérdida de información es clave para medir la desigualdad puesto que se genera un sesgo de subestimación de los datos, es decir, la perdida de información individual al no considerar la desigualdad entre cada grupo produce una subestimación. De acurdo con [RefCEPAL(2021)]" Desde un punto de vista teórico, la curva de Lorenz es un continuo de n puntos; por lo tanto, plantear el análisis de la distribución con datos agrupados consiste en aproximar un polinomio de grado n, a partir de un conjunto limitado de puntos m < n. De esta forma, en la medida que m se aproxime a n (m → n), el error de estimación deberá reducirse. Por el contrario, cuando el número de intervalos formados sea muy pequeño (m → 0), se incrementará en forma considerable el error de aproximación, y por tanto se subestimará de manera importante el verdadero nivel de desigualdad".
+
+Con base en lo anterior, la descomposición por grupos tienen un papel importante en el análisis de la desigualdad debido a que es importante conocer de dónde provienen los mayores desequilibrios.
+
+Existen dos formas principales para descomponer el coeficiente de Gini, la primera se basa en las distintas fuentes de ingreso de las familias y la otra se realiza a partir del estudio de las características del hogar y sus miembros.
+
+Des composición por subgrupos de población.
+ 
+De acuerdo con [@RefCEPAL(2021), p. 32]"El objetivo central es determinar cuál es el efecto en el nivel general de la desigualdad del agrupamiento de las observaciones, analizando de qué manera la concentración del ingreso puede ser explicada por las diferencias observadas entre los grupos en que la población ha sido dividida". En otras palabras, se busca determinar el porcentaje de la variabilidad en la distribución del ingreso que está explicado por factores asociados a la escolaridad, el mercado de trabajo, la riqueza acumula, al patrimonio, etc.
+
+El paquete de R que permite realizar dichos cálculos es el paquete 'dineq'. En especifico la función 'gini_descomp'. Para realizar un ejercicio practico, la documentación ofrece un ejemplo bastante ilustrativo.
+
+_Ejemplo: Descomposición del coeficiente de Gini por niveles de educación en México._
+
+```{r}
+library(dineq)
+data("mex_inc_2008") #Importamos la base
+force(mex_inc_2008)
+View(mex_inc_2008)
+education_decomp<- gini_decomp(x=mex_inc_2008$income,z=mex_inc_2008$education, weights=mex_inc_2008$factor) 
+View(education_decomp)
+#Creamos la base education_decomp. El primer termino se refiere a la variable ingreso, la sgunda a la variable por la que estamos desagrupando y el tercero incorpora el factor de expansión (opcional)
+```
+
+Descomposición espacial de GINI
+
+Para la descomposición espacial de Gini es necesario consultar (Rey y Smith, 2013) y utilizar el paquete lctools
+
