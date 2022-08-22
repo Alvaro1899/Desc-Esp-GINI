@@ -35,7 +35,7 @@ El paquete de R que permite realizar dichos cálculos es el paquete 'dineq'. En 
 
 _Ejemplo: Descomposición del coeficiente de Gini por niveles de educación en México._
 
-```{r}
+```{r eval=FALSE, include=FALSE}
 library(dineq)
 data("mex_inc_2008") #Importamos la base
 force(mex_inc_2008)
@@ -44,6 +44,36 @@ education_decomp<- gini_decomp(x=mex_inc_2008$income,z=mex_inc_2008$education, w
 View(education_decomp)
 #Creamos la base education_decomp. El primer termino se refiere a la variable ingreso, la sgunda a la variable por la que estamos desagrupando y el tercero incorpora el factor de expansión (opcional)
 ```
+
+#Ejercicio ENOE {-}
+
+##Ejercicio con base completa
+
+###Datos
+ 
+La Encuesta Nacional de Ocupación y Empleo (ENOE) muestra información estadística sobre las características de ocupación y empleo de la población, así como su información socialdemocracia y económica. El diseño de la muestra que obtiene la encuesta es probabilistaco, bietápico, estratificado y por  conglomerados donde la unidad ultima de observación es la persona entrevistada mayor a 15 años. 
+Variables utilizadas
+
+
+|INGOCUP        | RAMA_EST2          | CS_P13_1         |
+|---------------|--------------------|------------------|
+|Ingreso mensual| Clasificación de la población ocupada según sectores de actividad | Hasta que grado aprobó la escuela|
+
+```{r}
+library(dineq)
+load("Bases de datos/ENOE.RData")
+DG_rama13 <- gini_decomp(x=ENOET113$ingocup,z=ENOET113$rama_est2, weights=ENOET113$fac)
+```
+```{r}
+DG_edu13 <- gini_decomp(x=ENOET113$ingocup,z=ENOET113$cs_p13_1, weights=ENOET113$fac)
+```
+```{r}
+DG_rama18 <- gini_decomp(x=ENOET118$ingocup,z=ENOET118$rama_est2, weights=ENOET118$fac)
+```
+```{r}
+DG_edu18 <- gini_decomp(x=ENOET118$ingocup,z=ENOET118$cs_p13_1, weights=ENOET118$fac)
+```
+
 
 Descomposición espacial de GINI
 
