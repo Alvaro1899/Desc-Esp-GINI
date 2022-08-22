@@ -39,9 +39,7 @@ _Ejemplo: Descomposición del coeficiente de Gini por niveles de educación en M
 library(dineq)
 data("mex_inc_2008") #Importamos la base
 force(mex_inc_2008)
-View(mex_inc_2008)
 education_decomp<- gini_decomp(x=mex_inc_2008$income,z=mex_inc_2008$education, weights=mex_inc_2008$factor) 
-View(education_decomp)
 #Creamos la base education_decomp. El primer termino se refiere a la variable ingreso, la sgunda a la variable por la que estamos desagrupando y el tercero incorpora el factor de expansión (opcional)
 ```
 
@@ -125,4 +123,6 @@ n
 Descomposición espacial de GINI
 
 Para la descomposición espacial de Gini es necesario consultar (Rey y Smith, 2013) y utilizar el paquete lctools
+
+
 
