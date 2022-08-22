@@ -59,19 +59,66 @@ Variables utilizadas
 |---------------|--------------------|------------------|
 |Ingreso mensual| Clasificación de la población ocupada según sectores de actividad | Hasta que grado aprobó la escuela|
 
-```{r}
+```{r include=FALSE}
 library(dineq)
 load("Bases de datos/ENOE.RData")
+
+```
+```{r}
 DG_rama13 <- gini_decomp(x=ENOET113$ingocup,z=ENOET113$rama_est2, weights=ENOET113$fac)
 ```
-```{r}
+
+```{r include=FALSE}
 DG_edu13 <- gini_decomp(x=ENOET113$ingocup,z=ENOET113$cs_p13_1, weights=ENOET113$fac)
 ```
-```{r}
+```{r include=FALSE}
 DG_rama18 <- gini_decomp(x=ENOET118$ingocup,z=ENOET118$rama_est2, weights=ENOET118$fac)
 ```
-```{r}
+```{r include=FALSE}
 DG_edu18 <- gini_decomp(x=ENOET118$ingocup,z=ENOET118$cs_p13_1, weights=ENOET118$fac)
+```
+
+Obteniendo una submuestra
+
+```{r include=FALSE}
+set.seed(6)  #Semilla
+a <- sample(385792,16948,replace=F);a  #Obtiene una muestra aleatoria del tamaño recomendado en chrome-extension://efaidnbmnnnibpcajpcglclefindmkaj/https://www.inegi.org.mx/contenidos/programas/enoe/15ymas/doc/enoe_n_diseno_muestral.pdf (numero de obs. de la pob.,tamaño de la muestra,remplazo)
+m <- sort(a);m  #Ordena los resultados de menor a mayor
+
+submuestra <- ENOET113[m,]; View(submuestra)
+```
+
+Descomposición de Gini con la Submuestra.
+
+```{r include=FALSE}
+library(dineq)
+DG_rama13s <- gini_decomp(x=submuestra$ingocup,z=submuestra$rama_est2, weights=submuestra$fac)
+DG_edu13s <- gini_decomp(x=submuestra$ingocup,z=submuestra$cs_p13_1, weights=submuestra$fac)
+```
+
+La descomposición de Gini con la submuestra aleatoria simple da resultados muy aproximados con respecto a la muestra original. Repetimos el proceso con otra muestra para corroborar los resultados.
+```{r include=FALSE}
+set.seed(7)  #Semilla
+b <- sample(385792,16948,replace=F);a  #Obtiene una muestra aleatoria (numero de obs. de la pob.,tamaño de la muestra,remplazo)
+n <- sort(b);n  #Ordena los resultados de menor a mayor
+
+submuestra2 <- ENOET113[n,]; View(submuestra2)
+```
+```{r include=FALSE}
+DG_rama13s2 <- gini_decomp(x=submuestra2$ingocup,z=submuestra2$rama_est2, weights=submuestra2$fac)
+DG_edu13s2 <- gini_decomp(x=submuestra2$ingocup,z=submuestra2$cs_p13_1, weights=submuestra2$fac)
+```
+
+Definicion del tamaño la sub muestra aleatoria simple.
+Confianza = 95% -> Z=1.96
+Error = 0.05
+N=385792
+p=q=0.5
+$n=(Z^2Npq)/(e^2(N−1)+Z^2pq)$
+```{r}
+Z=1.96;p=0.5;q=1-p;N=385792;e=0.05
+n=(Z^2*N*p*q)/(e^2*(N-1)+Z^2*p*q)
+n
 ```
 
 
