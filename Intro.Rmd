@@ -35,7 +35,7 @@ El paquete de R que permite realizar dichos cálculos es el paquete 'dineq'. En 
 
 _Ejemplo: Descomposición del coeficiente de Gini por niveles de educación en México._
 
-```{r eval=FALSE, include=FALSE}
+```{r echo=TRUE}
 library(dineq)
 data("mex_inc_2008") #Importamos la base
 force(mex_inc_2008)
@@ -59,28 +59,28 @@ Variables utilizadas
 |---------------|--------------------|------------------|
 |Ingreso mensual| Clasificación de la población ocupada según sectores de actividad | Hasta que grado aprobó la escuela|
 
-```{r include=FALSE}
+```{r echo=TRUE}
 library(dineq)
 load("Bases de datos/ENOE.RData")
 
 ```
-```{r}
+```{r echo=TRUE}
 DG_rama13 <- gini_decomp(x=ENOET113$ingocup,z=ENOET113$rama_est2, weights=ENOET113$fac)
 ```
 
-```{r include=FALSE}
+```{r echo=TRUE}
 DG_edu13 <- gini_decomp(x=ENOET113$ingocup,z=ENOET113$cs_p13_1, weights=ENOET113$fac)
 ```
-```{r include=FALSE}
+```{r echo=TRUE}
 DG_rama18 <- gini_decomp(x=ENOET118$ingocup,z=ENOET118$rama_est2, weights=ENOET118$fac)
 ```
-```{r include=FALSE}
+```{r echo=TRUE}
 DG_edu18 <- gini_decomp(x=ENOET118$ingocup,z=ENOET118$cs_p13_1, weights=ENOET118$fac)
 ```
 
 Obteniendo una submuestra
 
-```{r include=FALSE}
+```{r echo=TRUE}
 set.seed(6)  #Semilla
 a <- sample(385792,16948,replace=F);a  #Obtiene una muestra aleatoria del tamaño recomendado en chrome-extension://efaidnbmnnnibpcajpcglclefindmkaj/https://www.inegi.org.mx/contenidos/programas/enoe/15ymas/doc/enoe_n_diseno_muestral.pdf (numero de obs. de la pob.,tamaño de la muestra,remplazo)
 m <- sort(a);m  #Ordena los resultados de menor a mayor
@@ -90,21 +90,21 @@ submuestra <- ENOET113[m,]; View(submuestra)
 
 Descomposición de Gini con la Submuestra.
 
-```{r include=FALSE}
+```{r echo=TRUE}
 library(dineq)
 DG_rama13s <- gini_decomp(x=submuestra$ingocup,z=submuestra$rama_est2, weights=submuestra$fac)
 DG_edu13s <- gini_decomp(x=submuestra$ingocup,z=submuestra$cs_p13_1, weights=submuestra$fac)
 ```
 
 La descomposición de Gini con la submuestra aleatoria simple da resultados muy aproximados con respecto a la muestra original. Repetimos el proceso con otra muestra para corroborar los resultados.
-```{r include=FALSE}
+```{r echo=TRUE}
 set.seed(7)  #Semilla
 b <- sample(385792,16948,replace=F);a  #Obtiene una muestra aleatoria (numero de obs. de la pob.,tamaño de la muestra,remplazo)
 n <- sort(b);n  #Ordena los resultados de menor a mayor
 
 submuestra2 <- ENOET113[n,]; View(submuestra2)
 ```
-```{r include=FALSE}
+```{r echo=TRUE}
 DG_rama13s2 <- gini_decomp(x=submuestra2$ingocup,z=submuestra2$rama_est2, weights=submuestra2$fac)
 DG_edu13s2 <- gini_decomp(x=submuestra2$ingocup,z=submuestra2$cs_p13_1, weights=submuestra2$fac)
 ```
