@@ -9,7 +9,7 @@ output: html_document
 
 El interés por la desigualdad ha dado lugar a la un cuantioso numero de artículos relacionados con problemas de medición e interpretación. Entre las principales contribuciones al campo están la tradicional curva de Lorenz y el coeficiente de Gini. Este último indicador de inequidad se puede interpetar de forma común como la diferencia entre la perfecta igualdad y la curva de Lorenz. Sus valores se sitúan alrededor de 0 y 1, mientras que 0 indica completa igualdad, valores cercanos a 1 indican niveles altos de desigualdad.
 
-Es habitual que el cálculo de los indicadores de desigualdad se realice a partir de datos agrupados,ya que, no resulta practico tener conjuntos de datos que pueden tener tamaños distintos. Por ello, agrupar los datos facilita la tarea del cálculo y de comparación entre grupos.Sin embargo, esta manera de proceder conduce necesariamente a la pérdida de información, debido a que los valores individuales de las observaciones serán sustituidos por algún valor que represente al intervalo en que se encuentran agrupados (por ejemplo, la marca de clase).
+Según la [@CEPAL], es habitual que el cálculo de los indicadores de desigualdad se realice a partir de datos agrupados,ya que, no resulta practico tener conjuntos de datos que pueden tener tamaños distintos. Por ello, agrupar los datos facilita la tarea del cálculo y de comparación entre grupos.Sin embargo, esta manera de proceder conduce necesariamente a la pérdida de información, debido a que los valores individuales de las observaciones son remplazados un valor que represente al intervalo en que se encuentran agrupados. 
 
 De acuerdo a lo anterior, el procedimiento que se utiliza para el cálculo del índice de Gini
 para datos agrupados es el siguiente:
@@ -21,7 +21,7 @@ distribuir (ingreso), así como de la población que se desea estudiar. Si se op
 formación de deciles de hogares, cada grupo deberá concentrar el 10% de las
 observaciones.
 
-La pérdida de información es clave para medir la desigualdad puesto que se genera un sesgo de subestimación de los datos, es decir, la perdida de información individual al no considerar la desigualdad entre cada grupo produce una subestimación. De acurdo con [RefCEPAL(2021)]" Desde un punto de vista teórico, la curva de Lorenz es un continuo de n puntos; por lo tanto, plantear el análisis de la distribución con datos agrupados consiste en aproximar un polinomio de grado n, a partir de un conjunto limitado de puntos m < n. De esta forma, en la medida que m se aproxime a n (m → n), el error de estimación deberá reducirse. Por el contrario, cuando el número de intervalos formados sea muy pequeño (m → 0), se incrementará en forma considerable el error de aproximación, y por tanto se subestimará de manera importante el verdadero nivel de desigualdad".
+La pérdida de información es clave para medir la desigualdad puesto que se genera un sesgo de subestimación de los datos, es decir, la perdida de información individual al no considerar la desigualdad entre cada grupo produce una subestimación. De acurdo con [@CEPAL]" Desde un punto de vista teórico, la curva de Lorenz es un continuo de n puntos; por lo tanto, plantear el análisis de la distribución con datos agrupados consiste en aproximar un polinomio de grado n, a partir de un conjunto limitado de puntos m < n. De esta forma, en la medida que m se aproxime a n (m → n), el error de estimación deberá reducirse. Por el contrario, cuando el número de intervalos formados sea muy pequeño (m → 0), se incrementará en forma considerable el error de aproximación, y por tanto se subestimará de manera importante el verdadero nivel de desigualdad".
 
 Con base en lo anterior, la descomposición por grupos tienen un papel importante en el análisis de la desigualdad debido a que es importante conocer de dónde provienen los mayores desequilibrios.
 
@@ -29,13 +29,13 @@ Existen dos formas principales para descomponer el coeficiente de Gini, la prime
 
 Des composición por subgrupos de población.
  
-De acuerdo con [@RefCEPAL(2021), p. 32]"El objetivo central es determinar cuál es el efecto en el nivel general de la desigualdad del agrupamiento de las observaciones, analizando de qué manera la concentración del ingreso puede ser explicada por las diferencias observadas entre los grupos en que la población ha sido dividida". En otras palabras, se busca determinar el porcentaje de la variabilidad en la distribución del ingreso que está explicado por factores asociados a la escolaridad, el mercado de trabajo, la riqueza acumula, al patrimonio, etc.
+De acuerdo con [@CEPAL, p. 32]"El objetivo central es determinar cuál es el efecto en el nivel general de la desigualdad del agrupamiento de las observaciones, analizando de qué manera la concentración del ingreso puede ser explicada por las diferencias observadas entre los grupos en que la población ha sido dividida". En otras palabras, se busca determinar el porcentaje de la variabilidad en la distribución del ingreso que está explicado por factores asociados a la escolaridad, el mercado de trabajo, la riqueza acumula, al patrimonio, etc.
 
-El paquete de R que permite realizar dichos cálculos es el paquete 'dineq'. En especifico la función 'gini_descomp'. Para realizar un ejercicio practico, la documentación ofrece un ejemplo bastante ilustrativo.
+El paquete de R que permite realizar dichos cálculos es el paquete 'dineq' publicado por . En especifico la función 'gini_descomp'. Para realizar un ejercicio practico, la documentación ofrece un ejemplo bastante ilustrativo.
 
 _Ejemplo: Descomposición del coeficiente de Gini por niveles de educación en México._
 
-```{r echo=TRUE}
+```{r include=FALSE}
 library(dineq)
 data("mex_inc_2008") #Importamos la base
 force(mex_inc_2008)
@@ -78,12 +78,14 @@ DG_edu18 <- gini_decomp(x=ENOET118$ingocup,z=ENOET118$cs_p13_1, weights=ENOET118
 
 Obteniendo una submuestra
 
+[@INEGI2021, p. 1] recomienda en el diseño muestral, la obtención de una submuestra de la ENOE de 16948 entrevistados cara a cara y 60607 obtenidas por teléfono. 
+
 ```{r echo=TRUE}
 set.seed(6)  #Semilla
-a <- sample(385792,16948,replace=F);a  #Obtiene una muestra aleatoria del tamaño recomendado en chrome-extension://efaidnbmnnnibpcajpcglclefindmkaj/https://www.inegi.org.mx/contenidos/programas/enoe/15ymas/doc/enoe_n_diseno_muestral.pdf (numero de obs. de la pob.,tamaño de la muestra,remplazo)
-m <- sort(a);m  #Ordena los resultados de menor a mayor
+a <- sample(385792,23555,replace=F) #Obtiene una muestra aleatoria del tamaño recomendado en chrome-extension://efaidnbmnnnibpcajpcglclefindmkaj/https://www.inegi.org.mx/contenidos/programas/enoe/15ymas/doc/enoe_n_diseno_muestral.pdf (numero de obs. de la pob.,tamaño de la muestra,remplazo)
+m <- sort(a)  #Ordena los resultados de menor a mayor
 
-submuestra <- ENOET113[m,]; View(submuestra)
+submuestra <- ENOET113[m,]
 ```
 
 Descomposición de Gini con la Submuestra.
@@ -97,10 +99,10 @@ DG_edu13s <- gini_decomp(x=submuestra$ingocup,z=submuestra$cs_p13_1, weights=sub
 La descomposición de Gini con la submuestra aleatoria simple da resultados muy aproximados con respecto a la muestra original. Repetimos el proceso con otra muestra para corroborar los resultados.
 ```{r echo=TRUE}
 set.seed(7)  #Semilla
-b <- sample(385792,16948,replace=F);a  #Obtiene una muestra aleatoria (numero de obs. de la pob.,tamaño de la muestra,remplazo)
-n <- sort(b);n  #Ordena los resultados de menor a mayor
+b <- sample(385792,23555,replace=F)  #Obtiene una muestra aleatoria (numero de obs. de la pob.,tamaño de la muestra,remplazo)
+n <- sort(b) #Ordena los resultados de menor a mayor
 
-submuestra2 <- ENOET113[n,]; View(submuestra2)
+submuestra2 <- ENOET113[n,]
 ```
 ```{r echo=TRUE}
 DG_rama13s2 <- gini_decomp(x=submuestra2$ingocup,z=submuestra2$rama_est2, weights=submuestra2$fac)
@@ -123,6 +125,4 @@ n
 Descomposición espacial de GINI
 
 Para la descomposición espacial de Gini es necesario consultar (Rey y Smith, 2013) y utilizar el paquete lctools
-
-
 
