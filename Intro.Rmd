@@ -3,6 +3,7 @@ title: "Descomposición espacial de GINI"
 author: "Alvaro Martínez Rodríguez"
 date: "2022-08-12"
 output: html_document
+bibliography: [book.bib]
 ---
 
 # Introducción a la descomposición de Gini{-}
